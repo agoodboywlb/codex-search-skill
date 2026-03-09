@@ -1,28 +1,26 @@
 ---
-name: codex-deep-search
-description: Deep web search using Codex CLI for complex queries that need multi-source synthesis. Use when web_search (Brave) returns insufficient results, when the user asks for in-depth research, comprehensive analysis, or says "deep search", "详细搜索", "帮我查一下", or when a topic needs following multiple links and cross-referencing sources.
+name: codex-search
+description: Web search skill for Claude Code using Codex CLI. Use when the user asks to search, research, look up information, or says "搜索", "帮我查一下", "search", "look up". Codex provides real-time web access that Claude Code lacks natively.
 ---
 
-# Codex Deep Search
+# Codex Search
 
-Use Codex CLI's web search capability for research tasks needing more depth than Brave API snippets.
+Use Codex CLI's web search capability to give Claude Code real-time web access.
 
 This skill is designed to run on `macOS` and `Linux`.
 
-## When to Prefer Over web_search
+## Why This Skill
 
-- Complex/niche topics needing multi-source synthesis
-- User explicitly asks for thorough/deep research
-- Brave results are too shallow or missing context
+Claude Code has no built-in web search. This skill bridges the gap by delegating search tasks to Codex CLI, which can browse the web, follow links, and synthesize findings into a structured report.
 
 ## Usage
 
 ### Dispatch Mode (recommended for long-running research)
 
 ```bash
-bash ./skills/codex-deep-search/scripts/search.sh \
+bash ./skills/codex-search/scripts/search.sh \
   --prompt "Your research query" \
-  --task-name "notebooklm-research" \
+  --task-name "my-research" \
   --dispatch \
   --timeout 120 > /tmp/codex-search.log 2>&1 &
 ```
@@ -32,7 +30,7 @@ After dispatch: tell the user where the metadata and output files are. Notificat
 ### Synchronous Mode (short queries only)
 
 ```bash
-bash ./skills/codex-deep-search/scripts/search.sh \
+bash ./skills/codex-search/scripts/search.sh \
   --prompt "Quick factual query" \
   --output "/tmp/search-result.md" \
   --timeout 60
@@ -43,7 +41,7 @@ Then read the output file and summarize.
 ### Optional Post-Run Hook
 
 ```bash
-bash ./skills/codex-deep-search/scripts/search.sh \
+bash ./skills/codex-search/scripts/search.sh \
   --prompt "Quarterly GPU market share trends" \
   --task-name "gpu-market-share" \
   --post-run-hook "./scripts/on-search-finished.sh"
@@ -66,7 +64,7 @@ The hook receives:
 | `--task-name` | No | `search-<timestamp>` | Task identifier |
 | `--output` | No | `<skill>/data/codex-search-results/<task>.md` | Output file path |
 | `--result-dir` | No | `<skill>/data/codex-search-results` | Directory for result artifacts |
-| `--model` | No | `gpt-5.3-codex` | Model override |
+| `--model` | No | `gpt-5.2` | Model override |
 | `--timeout` | No | `120` | Seconds before auto-stop |
 | `--codex-bin` | No | `codex` from `PATH` or `CODEX_BIN` | Codex executable |
 | `--dispatch` | No | `false` | Run search in the background |

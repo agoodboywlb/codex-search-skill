@@ -1,6 +1,10 @@
-# Codex Deep Search
+# Codex Search
 
-基于 [Codex CLI](https://github.com/openai/codex) 的深度网络搜索 Skill。适用于需要多源交叉验证的复杂查询 —— 当简单搜索 API 返回的摘要不够深入时使用。
+[English](README.md)
+
+面向 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 的网络搜索 Skill，基于 [Codex CLI](https://github.com/openai/codex) 驱动。
+
+Claude Code 本身没有联网搜索能力。本 Skill 通过调用 Codex CLI 进行网页浏览、链接跟踪和多源交叉验证，最终生成结构化的 Markdown 搜索报告。
 
 ## 安装
 
@@ -8,13 +12,13 @@
 # 直接 clone 到你项目的 skills/ 目录
 cd your-project/skills
 git clone https://github.com/agoodboywlb/codex-search-skill.git
-# codex-deep-search/ 即为可用的 skill 目录
+# codex-search/ 即为可用的 skill 目录
 ```
 
 或手动复制：
 
 ```bash
-cp -r codex-deep-search/ /path/to/your-project/skills/
+cp -r codex-search/ /path/to/your-project/skills/
 ```
 
 ## 前置依赖
@@ -26,19 +30,19 @@ cp -r codex-deep-search/ /path/to/your-project/skills/
 
 ```bash
 # 同步模式 — 等待结果返回
-bash skills/codex-deep-search/scripts/search.sh \
+bash skills/codex-search/scripts/search.sh \
   --prompt "你的搜索问题" \
   --task-name "my-task" \
   --timeout 120
 
 # 后台派发模式 — 立即返回
-bash skills/codex-deep-search/scripts/search.sh \
+bash skills/codex-search/scripts/search.sh \
   --prompt "详细行业分析" \
   --task-name "industry-analysis" \
   --dispatch
 ```
 
-结果默认写入 `codex-deep-search/data/codex-search-results/`。
+结果默认写入 `codex-search/data/codex-search-results/`。
 
 ## 参数说明
 
@@ -75,7 +79,7 @@ bash skills/codex-deep-search/scripts/search.sh \
 ## Post-Run Hook
 
 ```bash
-bash skills/codex-deep-search/scripts/search.sh \
+bash skills/codex-search/scripts/search.sh \
   --prompt "GPU 季度市场份额趋势" \
   --task-name "gpu-market" \
   --post-run-hook "./on-search-done.sh"
@@ -96,7 +100,7 @@ Hook 接收环境变量：`TASK_NAME`、`OUTPUT`、`META_FILE`、`STATUS`、`EXI
 codex-search-skill/           <- 仓库根目录
 ├── README.md                 <- English
 ├── README_CN.md              <- 中文
-└── codex-deep-search/        <- 拷贝此目录到你的 skills/ 下即可
+└── codex-search/             <- 拷贝此目录到你的 skills/ 下即可
     ├── SKILL.md
     ├── scripts/
     │   ├── search.sh
